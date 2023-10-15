@@ -6,41 +6,48 @@ import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 
-class GamePanel: SurfaceView, SurfaceHolder.Callback{
-    private var thread = MainThread()
+class GamePanel : SurfaceView, SurfaceHolder.Callback{
+    private var mainThread: MainThread? = null
 
     constructor(context: Context) : super(context) {
-        holder.addCallback(this)
-        thread = MainThread(holder, this)
-
+        getHolder().addCallback(this)
+        mainThread = MainThread(getHolder(), this)
+        setFocusable(true)
     }
 
-    override fun surfaceCreated(p0: SurfaceHolder) {
-        thread = MainThread(holder, this)
-        thread.setRunning(true)
-        thread.start()
+    override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
+        mainThread?.setRunning(false)
+        mainThread?.join()
     }
 
-    override fun surfaceChanged(p0: SurfaceHolder, p1: Int, p2: Int, p3: Int) {
-        TODO("Not yet implemented")
+    override fun surfaceCreated(holder: SurfaceHolder) {
+        mainThread = MainThread(getHolder(), this)
+        mainThread?.setRunning(true)
+        mainThread?.start()
     }
 
-    override fun surfaceDestroyed(p0: SurfaceHolder) {
+    override fun surfaceDestroyed(holder: SurfaceHolder) {
         var retry = true
-        while (true) {
-            thread.setRunning(false)
-            thread.join()
-        } catch (e: Exception) {
-            e.printStackTrace()
+        while (retry) {
+            try {
+                mainThread?.setRunning(false)
+                mainThread?.join()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
             retry = false
         }
     }
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
+    override fun onTouchEvent(event: MotionEvent): Boolean {
         return super.onTouchEvent(event)
     }
 
-    fun draw(canvas: Canvas) {
+    fun update() {
+
+    }
+
+    override fun draw(canvas: Canvas) {
         super.draw(canvas)
     }
 }

@@ -3,6 +3,7 @@ package com.example.mobileproject
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
+import android.graphics.Rect
 
 class Bird: BaseObject {
 
@@ -11,7 +12,14 @@ class Bird: BaseObject {
     private var vFlap = 5
     private var idCurrentBm = 0
     var drop: Float = 0.toFloat()
-    constructor()
+
+    constructor(x: Int, y: Int, width: Int, height: Int): super(x.toFloat(), y.toFloat(), width, height) {
+        this.x = x.toFloat()
+        this.y = y.toFloat()
+        this.width = width
+        this.height = height
+        rect = Rect(x, y, x + width, y + height)
+    }
 
     fun draw(canvas: Canvas) {
         drop()

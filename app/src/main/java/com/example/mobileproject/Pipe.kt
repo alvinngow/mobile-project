@@ -2,7 +2,6 @@ package com.example.mobileproject
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Rect
 import kotlin.random.Random
 
 class Pipe: BaseObject {
@@ -10,12 +9,11 @@ class Pipe: BaseObject {
     companion object {
         var speed = 10* Constants.SCREEN_WIDTH / 1080
     }
-    constructor(x: Int, y: Float, width: Int, height: Int): super(x.toFloat(), y, width, height) {
+    constructor(x: Int, y: Float, width: Int, height: Int): super(x, y, width, height) {
         this.x = x.toFloat()
         this.y = y
         this.width = width
         this.height = height
-        rect = Rect(x, y.toInt(), x + width, (y + height).toInt())
     }
 
     fun draw(canvas: Canvas) {

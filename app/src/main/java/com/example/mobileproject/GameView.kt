@@ -16,10 +16,6 @@ class GameView : View {
     private var arrPipes = ArrayList<Pipe>()
     private var sumPipe = 0
     private var distance = 0
-    private var score = 0
-    private var bestScore = 0
-    private var isGameOver = false
-    var start = false
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         initBird()
         initPipe()
@@ -45,11 +41,11 @@ class GameView : View {
     }
 
     private fun initBird() {
-        val width = 100 * Constants.SCREEN_WIDTH / 1080
-        val height = 100 * Constants.SCREEN_HEIGHT / 1920
-        val x = (100 * Constants.SCREEN_WIDTH / 1080 / 2).toFloat()
-        val y = (Constants.SCREEN_HEIGHT/2 - height/2).toFloat()
-        bird = Bird(x.toInt(), y.toInt(), width, height)
+        bird = Bird()
+        bird!!.width = 100 * Constants.SCREEN_WIDTH / 1080
+        bird!!.height = 100 * Constants.SCREEN_HEIGHT / 1920
+        bird!!.x = (100 * Constants.SCREEN_WIDTH / 1080 / 2).toFloat()
+        bird!!.y = (Constants.SCREEN_HEIGHT/2 - bird!!.height/2).toFloat()
         val arrBms = ArrayList<Bitmap>()
         arrBms.add(BitmapFactory.decodeResource(resources, R.drawable.bird1))
         arrBms.add(BitmapFactory.decodeResource(resources, R.drawable.bird2))
@@ -59,39 +55,17 @@ class GameView : View {
 
     override fun draw(canvas: Canvas) {
         super.draw(canvas)
-        if (start) {
-            bird!!.draw(canvas)
-            for (i in 0 until sumPipe) {
-                if (bird!!.rect!!.intersect(arrPipes[i].rect!!) || bird!!.y - bird!!.height < 0  || bird!!.y > Constants.SCREEN_HEIGHT) {
-                    Pipe.speed = 0
-                    val mainActivity = context as MainActivity
-                    mainActivity.textScoreOver!!.text = score.toString()
-                    val tempTextHighScore = "Best: $bestScore"
-                    mainActivity.textHighScore!!.text = tempTextHighScore
-                    mainActivity.r1GameOver!!.visibility = VISIBLE
+        bird!!.draw(canvas)
+        for (i in 0 until sumPipe) {
+            if (arrPipes[i].x < -arrPipes[i].width) {
+                arrPipes[i].x = (Constants.SCREEN_WIDTH).toFloat()
+                if (i < sumPipe/2) {
+                    arrPipes[i].randomY()
+                } else {
+                    arrPipes[i].y = arrPipes[i - sumPipe/2].y + arrPipes[i].height + distance + 300
                 }
             }
-            for (i in 0 until sumPipe) {
-                if (bird!!.x + bird!!.width > arrPipes[i].x + arrPipes[i].width/2 && bird!!.x + bird!!.width <= arrPipes[i].x + arrPipes[i].width/2 + Pipe.speed && i < sumPipe/2) {
-                    score++
-                    val mainActivity = context as MainActivity
-                    mainActivity.textScore!!.text = score.toString()
-                }
-                if (arrPipes[i].x < -arrPipes[i].width) {
-                    arrPipes[i].x = (Constants.SCREEN_WIDTH).toFloat()
-                    if (i < sumPipe/2) {
-                        arrPipes[i].randomY()
-                    } else {
-                        arrPipes[i].y = arrPipes[i - sumPipe/2].y + arrPipes[i].height + distance + 300
-                    }
-                }
-                arrPipes[i].draw(canvas)
-            }
-        } else {
-            if (bird!!.y > Constants.SCREEN_HEIGHT/2) {
-                bird!!.drop = (-15 * Constants.SCREEN_HEIGHT / 1920).toFloat()
-            }
-            bird!!.draw(canvas)
+            arrPipes[i].draw(canvas)
         }
         handler!!.postDelayed(runnable!!, 1000/60)
     }
@@ -101,14 +75,5 @@ class GameView : View {
             bird!!.drop = -15f
         }
         return true
-    }
-
-    fun reset() {
-        val mainActivity = context as MainActivity
-        mainActivity.textScore!!.text = "0"
-        score = 0
-        Pipe.speed = 10 * Constants.SCREEN_WIDTH / 1080
-        initBird()
-        initPipe()
     }
 }

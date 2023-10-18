@@ -13,6 +13,9 @@ class GameView : View {
     private var bird: Bird? = null
     private var handler: Handler? = Handler()
     private var runnable: Runnable? = null
+    private var score = 0
+    private var bestScore = 0
+    var start = false
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         initBird()
         runnable = Runnable {
@@ -35,7 +38,22 @@ class GameView : View {
 
     override fun draw(canvas: Canvas) {
         super.draw(canvas)
-        bird!!.draw(canvas)
+        if (start) {
+            bird!!.draw(canvas)
+            if (bird!!.y - bird!!.height < 0 || bird!!.y + bird!!.height > Constants.SCREEN_HEIGHT) {
+                val mainActivity = context as MainActivity
+                mainActivity.txt_score_over.text = mainActivity.txt_score.text
+                mainActivity.txt_score.visibility = View.INVISIBLE
+                mainActivity.r1_game_over.visibility = View.VISIBLE
+
+            }
+        } else {
+            if (bird!!.y > Constants.SCREEN_HEIGHT/2) {
+                bird!!.drop = (-15 * Constants.SCREEN_HEIGHT / 1920).toFloat()
+            }
+            bird!!.draw(canvas)
+        }
+
         handler!!.postDelayed(runnable!!, 1000/60)
     }
 
@@ -44,5 +62,12 @@ class GameView : View {
             bird!!.drop = -15f
         }
         return true
+    }
+
+    fun reset() {
+        val mainActivity = context as MainActivity
+        mainActivity.txt_score.text = "0"
+        score = 0
+        initBird()
     }
 }

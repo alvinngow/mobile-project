@@ -47,6 +47,8 @@ class Login : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         Log.d("LifeCycle", "onCreate() is called")
 //        writeScore("maars\tmaars1\t4")
+//        writeScore("Ron\tmaars1\t17")
+//        writeScore("Jane\tmaars1\t10")
         println("writeScore done")
 //        val scanner3  = Scanner(resources.openRawResource(R.raw.username_password))
         val scanner4 = Scanner(openFileInput("score.txt"))

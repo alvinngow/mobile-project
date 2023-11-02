@@ -46,8 +46,15 @@ class MainActivity : Activity() {
                 }
             }
         }
-        val outStream = PrintStream(openFileOutput("score.txt", MODE_APPEND))
+        val outStream = PrintStream(openFileOutput("score.txt", MODE_PRIVATE))
         outStream.println(oldContent)
+        outStream.close()
+
+    }
+
+    fun cleantext() {
+        val outStream = PrintStream(openFileOutput("score.txt", MODE_PRIVATE))
+        outStream.println()
         outStream.close()
 
     }
@@ -68,6 +75,7 @@ class MainActivity : Activity() {
         println("readFile3 done")
     }
     fun showLeaderboard(){
+        println("readfile showLeaderboard")
         val scanner4 = Scanner(openFileInput("score.txt"))
         readFile3(scanner4)
         val result = userScores.toList().sortedBy { (_, value) -> -value}.toMap()
@@ -113,6 +121,7 @@ class MainActivity : Activity() {
         r1_game_over.setOnClickListener() {
 
             gridView.visibility = TextView.VISIBLE
+//            cleantext()
             val scanner = Scanner(openFileInput("score.txt"))
             editScore(scanner, "maars", gv.score)
             showLeaderboard()

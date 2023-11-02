@@ -7,6 +7,7 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
 
 class MainActivity : Activity() {
 
@@ -15,6 +16,8 @@ class MainActivity : Activity() {
     lateinit var txt_score_over: TextView
     lateinit var r1_game_over: RelativeLayout
     lateinit var btn_start: Button
+    var score: Int = 0
+    var bestScore: Int = 0
     private lateinit var gv: GameView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,12 +39,20 @@ class MainActivity : Activity() {
             r1_game_over.visibility = RelativeLayout.INVISIBLE
             txt_score.visibility = TextView.VISIBLE
             txt_score.text = "0"
+//            score += 1;
+//            txt_score.text = score.toString()
+            txt_score.text = "Score: " + gv.score.toString()
+            Toast.makeText(this, "score: " + score.toString(), Toast.LENGTH_SHORT).show()
+
             btn_start.visibility = Button.INVISIBLE
         }
         r1_game_over.setOnClickListener() {
             btn_start.visibility = Button.VISIBLE
             r1_game_over.visibility = RelativeLayout.INVISIBLE
             txt_score.visibility = TextView.VISIBLE
+//            score += 1;
+            txt_score.text = gv.score.toString()
+            Toast.makeText(this, "score2: " + gv.score.toString(), Toast.LENGTH_SHORT).show()
             gv.start = false
             gv.reset()
         }

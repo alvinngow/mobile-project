@@ -8,12 +8,13 @@ import android.os.Handler
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import android.widget.Toast
 
 class GameView : View {
     private var bird: Bird? = null
     private var handler: Handler? = Handler()
     private var runnable: Runnable? = null
-    private var score = 0
+    public var score = 0
     private var bestScore = 0
     var start = false
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
@@ -61,12 +62,20 @@ class GameView : View {
         if (event!!.action == MotionEvent.ACTION_DOWN) {
             bird!!.drop = -15f
         }
+        score += 1
+//        Toast.makeText(this.context, "score3: " + score.toString(), Toast.LENGTH_SHORT).show()
+        val mainActivity = context as MainActivity
+        mainActivity.txt_score.text = "Current: " + score.toString()
+        if (mainActivity.bestScore < score){
+            mainActivity.bestScore = score
+            mainActivity.txt_best_score.text = "Best: " + mainActivity.bestScore.toString()
+        }
         return true
     }
 
     fun reset() {
         val mainActivity = context as MainActivity
-        mainActivity.txt_score.text = "0"
+        mainActivity.txt_score.text = score.toString()
         score = 0
         initBird()
     }

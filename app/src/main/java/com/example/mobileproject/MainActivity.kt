@@ -10,6 +10,7 @@ import android.widget.GridView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
+import java.io.PrintStream
 import java.util.HashMap
 import java.util.Scanner
 
@@ -23,11 +24,34 @@ class MainActivity : Activity() {
     var score: Int = 0
     var bestScore: Int = 0
     private lateinit var gv: GameView
-
     lateinit var gridView: GridView
+
+//    lateinit var gridView: GridView
     private var playerNames3: ArrayList<String> = ArrayList<String>()
     private var playerScores3: ArrayList<Int> = ArrayList<Int>()
     private var userScores = HashMap<String,Int>()
+
+    fun editScore(scanner: Scanner, username: String, score: Int){
+        print("readfile editScore")
+        var oldContent = ""
+        while(scanner.hasNextLine()){
+            val line = scanner.nextLine()
+            val pieces = line.split("\t")
+
+            if (pieces.size >= 3){
+                if (pieces[0].equals(username)) {
+                    oldContent += "${pieces[0]}\t${pieces[1]}\t${score}\n"
+                }else{
+                    oldContent += line + "\n"
+                }
+            }
+        }
+        val outStream = PrintStream(openFileOutput("score.txt", MODE_APPEND))
+        outStream.println(oldContent)
+        outStream.close()
+
+    }
+
 
     private fun readFile3(scanner: Scanner){
         while(scanner.hasNextLine()){
@@ -78,9 +102,7 @@ class MainActivity : Activity() {
         r1_game_over = findViewById(R.id.rl_game_over)
         gv = findViewById(R.id.gv)
         btn_start = findViewById(R.id.btn_start)
-//        gridView = findViewById(R.id.gridView)
-//        gridView.visibility = TextView.INVISIBLE
-//        showLeaderboard()
+        gridView = findViewById(R.id.gridView)
         btn_start.setOnClickListener() {
             gv.start = true
             r1_game_over.visibility = RelativeLayout.INVISIBLE
@@ -89,9 +111,15 @@ class MainActivity : Activity() {
             btn_start.visibility = Button.INVISIBLE
         }
         r1_game_over.setOnClickListener() {
+
+            gridView.visibility = TextView.VISIBLE
+            val scanner = Scanner(openFileInput("score.txt"))
+            editScore(scanner, "maars", gv.score)
+            showLeaderboard()
             btn_start.visibility = Button.VISIBLE
             r1_game_over.visibility = RelativeLayout.INVISIBLE
             txt_score.visibility = TextView.VISIBLE
+
             gv.start = false
             gv.reset()
         }

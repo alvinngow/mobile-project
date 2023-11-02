@@ -65,23 +65,27 @@ class Login : AppCompatActivity() {
 
     }
 
-    private fun readFile(scanner: Scanner){
-        while(scanner.hasNextLine()){
-            val line = scanner.nextLine()
-            val pieces = line.split("\t")
-            println("pieces: ${pieces[0]}")
-            words.add(pieces[0])
-            wordToDefn[pieces[0]] = pieces[1]
-        }
-    }
+//    private fun readFile(scanner: Scanner){
+//        while(scanner.hasNextLine()){
+//            val line = scanner.nextLine()
+//            val pieces = line.split("\t")
+//            println("pieces: ${pieces[0]}")
+//            words.add(pieces[0])
+//            wordToDefn[pieces[0]] = pieces[1]
+//        }
+//    }
 
     private fun readFile2(scanner: Scanner){
         while(scanner.hasNextLine()){
             val line = scanner.nextLine()
             val pieces = line.split("\t")
-            println("pieces: ${pieces[0]}")
+            println("pieces: -${line}-${pieces.size}")
+            if (pieces.size >= 3){
+                usernamePassword[pieces[0]] = pieces[1]
+            }
+//            println("pieces: ${pieces[0]}-${pieces[1]}-${pieces[2]}")
 //            passwords.add(pieces[0])
-            usernamePassword[pieces[0]] = pieces[1]
+
         }
     }
 

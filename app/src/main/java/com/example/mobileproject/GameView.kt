@@ -59,6 +59,7 @@ class GameView : View {
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
+        print("onTouchEvent: " + event!!.action)
         if (event!!.action == MotionEvent.ACTION_DOWN) {
             bird!!.drop = -15f
         }

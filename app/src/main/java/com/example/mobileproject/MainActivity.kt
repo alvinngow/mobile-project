@@ -1,8 +1,10 @@
 package com.example.mobileproject
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.RelativeLayout
@@ -45,5 +47,13 @@ class MainActivity : Activity() {
             gv.start = false
             gv.reset()
         }
+    }
+
+    // --- Start new intent and move to LeaderboardActivity
+    fun leaderboardClick(view: View) {
+        val intent = Intent(this, LeaderboardActivity::class.java)
+        startActivity(intent)
+        // Sliding animation to next intent
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 }

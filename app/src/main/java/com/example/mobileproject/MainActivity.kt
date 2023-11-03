@@ -26,24 +26,16 @@ class MainActivity : Activity(), SensorEventListener {
 
 
     private lateinit var sensorMan:SensorManager
-    private lateinit var gyroscope: Sensor
-    private var processedSensorData: SensorData? = null
+//    private lateinit var gyroscope: Sensor
+    private lateinit var accelerometer: Sensor
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         sensorMan = getSystemService(SENSOR_SERVICE) as SensorManager
-        gyroscope =sensorMan.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
-
-
-
-
-        // create a function to call gv function that changes the bird' drop rate over time
-        // while loop to let it increase drop rate over time
-        // once bird dies, stop
-
-
-
+//        gyroscope =sensorMan.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
+        accelerometer = sensorMan.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
 
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -79,7 +71,8 @@ class MainActivity : Activity(), SensorEventListener {
         }
 
         gv.sensorMan = sensorMan
-        gv.gyroscope = gyroscope
+//        gv.gyroscope = gyroscope
+        gv.accelerometer = accelerometer
 
 
         val sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
@@ -101,7 +94,7 @@ class MainActivity : Activity(), SensorEventListener {
 
     override fun onResume() {
         super.onResume()
-        sensorMan.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_NORMAL)
+        sensorMan.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL)
 //        gv.startScoringSystem()
     }
 

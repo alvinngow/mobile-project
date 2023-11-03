@@ -22,7 +22,8 @@ import com.google.android.material.color.utilities.Score
 
 class GameView : View, SensorEventListener {
     lateinit var sensorMan:SensorManager
-    lateinit var gyroscope: Sensor
+//    lateinit var gyroscope: Sensor
+    lateinit var accelerometer: Sensor
 
     private var bird: Bird? = null
     private var handler: Handler? = Handler()
@@ -30,6 +31,15 @@ class GameView : View, SensorEventListener {
     private var score = 0
     private var bestScore = 0
     var start = false
+
+    private enum class GameState {
+        Neutral, Reaching2, Reaching0, JumpReady
+    }
+
+    private var state = GameState.Neutral
+    private val yValue2 = 1
+    private val yValue0 = 0
+
 
 
 
@@ -59,7 +69,7 @@ class GameView : View, SensorEventListener {
 
     override fun draw(canvas: Canvas) {
         super.draw(canvas)
-        Log.d("Record Best Score:", "Best score - ${recordBestScore()}")
+//        Log.d("Record Best Score:", "Best score - ${recordBestScore()}")
         if (start) {
             bird!!.draw(canvas)
             if (bird!!.y - bird!!.height < 0 || bird!!.y + bird!!.height > Constants.SCREEN_HEIGHT) {
@@ -102,7 +112,7 @@ class GameView : View, SensorEventListener {
             override fun run() {
                 ScoreManager.birdDropRate *= 1.1f
                 handler?.postDelayed(this, 3000)
-                Log.d("Bird Drop Rate,", "Drop rate is ${ScoreManager.birdDropRate}")
+//                Log.d("Bird Drop Rate,", "Drop rate is ${ScoreManager.birdDropRate}")
             }
 
         }
@@ -116,7 +126,7 @@ class GameView : View, SensorEventListener {
                 ScoreManager.score++
                 mainActivity.txt_score.text = ScoreManager.score.toString()
                 handler?.postDelayed(this, 1000)
-                Log.d("Current score,", "Score is $ScoreManager.score")
+//                Log.d("Current score,", "Score is $ScoreManager.score")
             }
         }
         handler?.post(scoreUpdateRunnable)
@@ -149,12 +159,28 @@ class GameView : View, SensorEventListener {
         val z = p0.values[2]
 
 
-        if (x > 0) {
-            bird!!.drop = -15f
+//        if (z > 0) {
+//            bird!!.drop = -15f
+//        }
+
+        when (state) {
+            GameState.Neutral -> if (z >= yValue2) {
+                state = GameState.Reaching2
+            }
+            GameState.Reaching2 -> if (z <= yValue0) {
+                state = GameState.Reaching0
+            }
+            GameState.Reaching0 -> if (z >= yValue2) {
+                state = GameState.JumpReady
+            }
+            GameState.JumpReady -> {
+                bird!!.drop = -15f
+                state = GameState.Neutral
+            }
         }
 
 
-        Log.d("SensorDebug", "Gyroscope Data - X: $x, Y: $y, Z: $z")
+        Log.d("SensorDebug", "Accelerometer Data - X: $x, Y: $y, Z: $z")
 //        startScoringSystem()
 
     }

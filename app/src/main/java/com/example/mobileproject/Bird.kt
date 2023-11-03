@@ -19,7 +19,9 @@ class Bird: BaseObject {
     }
 
     private fun drop() {
-        this.drop += 0.6f
+//        this.drop += 0.6f
+//        this.y += this.drop
+        this.drop += ScoreManager.birdDropRate
         this.y += this.drop
     }
 

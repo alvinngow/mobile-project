@@ -78,6 +78,7 @@ class GameView : View, SensorEventListener {
                 mainActivity.txt_score.visibility = View.INVISIBLE
                 mainActivity.r1_game_over.visibility = View.VISIBLE
                 mainActivity.txt_best_score.text = "Best Score: ${recordBestScore().toString()}"
+                ScoreManager.bestScore = recordBestScore()
                 stopScoringSystem()
                 resetScoringSystem()
 

@@ -46,6 +46,8 @@ class Login : AppCompatActivity() {
 //        FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_login)
         Log.d("LifeCycle", "onCreate() is called")
+
+//        create method to insert these entries if not there:
 //        writeScore("maars\tmaars1\t4")
 //        writeScore("Ron\tmaars1\t17")
 //        writeScore("Jane\tmaars1\t10")

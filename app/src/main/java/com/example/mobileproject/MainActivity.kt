@@ -13,6 +13,7 @@ import android.widget.Toast
 import java.io.PrintStream
 import java.util.HashMap
 import java.util.Scanner
+import kotlin.math.max
 
 class MainActivity : Activity() {
 
@@ -31,25 +32,24 @@ class MainActivity : Activity() {
     private var playerScores3: ArrayList<Int> = ArrayList<Int>()
     private var userScores = HashMap<String,Int>()
 
-    fun editScore(scanner: Scanner, username: String, score: Int){
-        print("readfile editScore")
+    fun editScore(username: String, score: Int){
+        println("button: editScore - "+score)
+        val scanner = Scanner(openFileInput("score.txt"))
         var oldContent = ""
         while(scanner.hasNextLine()){
             val line = scanner.nextLine()
             val pieces = line.split("\t")
 
             if (pieces.size >= 3){
-                if (pieces[0].equals(username)) {
+//                updates only if score is higher:
+                if (pieces[0].equals(username) && pieces[2].toInt() < score) {
                     oldContent += "${pieces[0]}\t${pieces[1]}\t${score}\n"
-                }else{
-                    oldContent += line + "\n"
-                }
+                }else{ oldContent += line + "\n" }
             }
         }
         val outStream = PrintStream(openFileOutput("score.txt", MODE_PRIVATE))
         outStream.println(oldContent)
         outStream.close()
-
     }
 
     fun cleantext() {
@@ -60,7 +60,8 @@ class MainActivity : Activity() {
     }
 
 
-    private fun readFile3(scanner: Scanner){
+    private fun readFile3(){
+        val scanner = Scanner(openFileInput("score.txt"))
         while(scanner.hasNextLine()){
             val line = scanner.nextLine()
             val pieces = line.split("\t")
@@ -76,8 +77,7 @@ class MainActivity : Activity() {
     }
     fun showLeaderboard(){
         println("readfile showLeaderboard")
-        val scanner4 = Scanner(openFileInput("score.txt"))
-        readFile3(scanner4)
+        readFile3()
         val result = userScores.toList().sortedBy { (_, value) -> -value}.toMap()
 
         val playerNames2: ArrayList<String> = ArrayList(result.keys)
@@ -92,10 +92,22 @@ class MainActivity : Activity() {
 //                Toast.LENGTH_SHORT
 //            ).show()
         }
-
         println("readFile3 after ")
     }
+
+    fun updateBestScore(username: String){
+        val scanner = Scanner(openFileInput("score.txt"))
+        while(scanner.hasNextLine()){
+            val line = scanner.nextLine()
+            val pieces = line.split("\t")
+            if (pieces.size >= 3){
+                if (pieces[0] == username){
+                    bestScore = max(pieces[2].toInt(), bestScore)
+                    println("button: update bestScore done-" + pieces[2])
+                } } }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
+        println("button: mainactivity onstart start")
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -111,26 +123,45 @@ class MainActivity : Activity() {
         gv = findViewById(R.id.gv)
         btn_start = findViewById(R.id.btn_start)
         gridView = findViewById(R.id.gridView)
+
+
+        gridView.visibility = TextView.VISIBLE
+        val scanner = Scanner(openFileInput("score.txt"))
+//        editScore("maars", bestScore)
+        showLeaderboard()
+
+
         btn_start.setOnClickListener() {
+            println("button: btn_start start")
             gv.start = true
             r1_game_over.visibility = RelativeLayout.INVISIBLE
             txt_score.visibility = TextView.VISIBLE
             txt_score.text = "0"
             btn_start.visibility = Button.INVISIBLE
+
+//            editScore(scanner, "maars", gv.score)
+            gridView.visibility = TextView.VISIBLE
+//            update with best score from score.txt:
+//            editScore(scanner, "maars", bestScore)
+            println("button: before updateBestScore -" + bestScore)
+            updateBestScore("maars")
+            showLeaderboard()
+            println("button: btn_start end -" + bestScore)
         }
         r1_game_over.setOnClickListener() {
-
-            gridView.visibility = TextView.VISIBLE
-//            cleantext()
-            val scanner = Scanner(openFileInput("score.txt"))
-            editScore(scanner, "maars", gv.score)
+            println("button: r1_game_over listener start")
+            gridView.visibility = TextView.INVISIBLE
+            editScore("maars", bestScore)
             showLeaderboard()
+//            cleantext()
+
             btn_start.visibility = Button.VISIBLE
             r1_game_over.visibility = RelativeLayout.INVISIBLE
             txt_score.visibility = TextView.VISIBLE
-
             gv.start = false
             gv.reset()
+            println("button: r1_game_over listener end - "+bestScore)
         }
+        println("button: mainactivity onstart end")
     }
 }

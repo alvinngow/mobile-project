@@ -1,5 +1,6 @@
 package com.example.mobileproject
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -9,6 +10,8 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
+import java.io.PrintStream
+import java.util.Scanner
 
 class GameView : View {
     private var bird: Bird? = null
@@ -58,6 +61,8 @@ class GameView : View {
         handler!!.postDelayed(runnable!!, 1000/60)
     }
 
+
+
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         print("onTouchEvent: " + event!!.action)
         if (event!!.action == MotionEvent.ACTION_DOWN) {
@@ -70,7 +75,10 @@ class GameView : View {
         if (mainActivity.bestScore < score){
             mainActivity.bestScore = score
             mainActivity.txt_best_score.text = "Best: " + mainActivity.bestScore.toString()
+            println("button: bestScore at onTouchEvent " + mainActivity.bestScore +"--"+score)
         }
+
+//        mainActivity.editScore("maars", mainActivity.bestScore)
         return true
     }
 
@@ -78,6 +86,8 @@ class GameView : View {
         val mainActivity = context as MainActivity
         mainActivity.txt_score.text = score.toString()
         score = 0
+        mainActivity.editScore("maars", mainActivity.bestScore)
+        println("button: bestScore at reset " + mainActivity.bestScore)
         initBird()
     }
 }

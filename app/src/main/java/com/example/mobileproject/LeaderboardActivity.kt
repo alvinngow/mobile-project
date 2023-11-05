@@ -57,13 +57,13 @@ class LeaderboardActivity : AppCompatActivity() {
             // Add default values into leaderboardScore
             leaderboardScore.add(arrayOf("maars", "20"))
             leaderboardScore.add(arrayOf("Ron", "6"))
-            leaderboardScore.add(arrayOf("Jane", "2"))
+            leaderboardScore.add(arrayOf("Jane", "1"))
 
             // Print default values into scores.txt
             val outStream = PrintStream(openFileOutput("scores.txt", MODE_APPEND))
             outStream.println("maars\t20")
             outStream.println("Ron\t6")
-            outStream.println("Jane\t2")
+            outStream.println("Jane\t1")
             outStream.close()
         }
     }
@@ -86,7 +86,17 @@ class LeaderboardActivity : AppCompatActivity() {
             newLeaderboardScore.add(arrayOf("$username", "$bestScore"))
         }
         newLeaderboardScore.removeLast()
+
+        // Update leaderboardScore
         leaderboardScore = newLeaderboardScore
+
+        // Update values into scores.txt
+        val outStream = PrintStream(openFileOutput("scores.txt", MODE_PRIVATE))
+        leaderboardScore.forEach{ score  -> outStream.println(score[0] + "\t" + score[1])}
+        outStream.close()
+
+        scoreManager.score = 0
+        scoreManager.bestScore = 0
     }
 
     // --- Update Leaderboard TextView

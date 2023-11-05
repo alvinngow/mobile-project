@@ -2,6 +2,7 @@ package com.example.mobileproject
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import java.io.PrintStream
@@ -9,13 +10,22 @@ import java.util.Scanner
 
 class LeaderboardActivity : AppCompatActivity() {
     private var leaderboardScore = arrayListOf<Array<String>>()
+    private var scoreManager = ScoreManager
+    private var username = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_leaderboard)
 
+        // Get and set current user
+        username = intent.getStringExtra("username").toString()
+        Log.d("!LeaderboardActivity: Username", "$username")
+
         // Read Leaderboard Text File
         readLeaderboardFile()
+
+        // Check Score Manager
+        checkScoreManager()
 
         // Update Leaderboard TextView
         updateLeaderboardTV()
@@ -45,17 +55,38 @@ class LeaderboardActivity : AppCompatActivity() {
             // Cause of Exception: Most likely the scores.txt hasn't been created
 
             // Add default values into leaderboardScore
-            leaderboardScore.add(arrayOf("maars", "17"))
-            leaderboardScore.add(arrayOf("Ron", "10"))
-            leaderboardScore.add(arrayOf("Jane", "4"))
+            leaderboardScore.add(arrayOf("maars", "20"))
+            leaderboardScore.add(arrayOf("Ron", "6"))
+            leaderboardScore.add(arrayOf("Jane", "2"))
 
             // Print default values into scores.txt
             val outStream = PrintStream(openFileOutput("scores.txt", MODE_APPEND))
-            outStream.println("maars\t17")
-            outStream.println("Ron\t10")
-            outStream.println("Jane\t4")
+            outStream.println("maars\t20")
+            outStream.println("Ron\t6")
+            outStream.println("Jane\t2")
             outStream.close()
         }
+    }
+
+    // -- Check ScoreManager
+    fun checkScoreManager() {
+        val bestScore = scoreManager.bestScore
+        Log.d("!SCORE", "$bestScore")
+        var newLeaderboardScore = arrayListOf<Array<String>>()
+        var notAdded = true
+        leaderboardScore.forEach{ score  -> if (bestScore > score[1].toInt() && notAdded) {
+            newLeaderboardScore.add(arrayOf("$username", "$bestScore"))
+            newLeaderboardScore.add(score)
+            notAdded = false
+            } else {
+                newLeaderboardScore.add(score)
+            }
+        }
+        if (notAdded) {
+            newLeaderboardScore.add(arrayOf("$username", "$bestScore"))
+        }
+        newLeaderboardScore.removeLast()
+        leaderboardScore = newLeaderboardScore
     }
 
     // --- Update Leaderboard TextView

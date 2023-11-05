@@ -1,8 +1,6 @@
 package com.example.mobileproject
 
-import android.app.Activity
 import android.content.Context
-import android.content.Context.SENSOR_SERVICE
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
@@ -11,13 +9,12 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Handler
-import android.os.Looper
 import android.util.AttributeSet
 import android.util.Log
-import android.view.MotionEvent
 import android.view.View
-import androidx.core.content.ContextCompat.getSystemService
-import com.google.android.material.color.utilities.Score
+import androidx.appcompat.app.AppCompatActivity
+import java.io.PrintStream
+import java.util.Scanner
 
 
 class GameView : View, SensorEventListener {
@@ -40,7 +37,7 @@ class GameView : View, SensorEventListener {
     private val yValue2 = 1
     private val yValue0 = 0
 
-
+    private var leaderboardScore = arrayListOf<Array<String>>()
 
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {

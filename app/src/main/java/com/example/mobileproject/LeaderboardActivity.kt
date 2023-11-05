@@ -102,9 +102,9 @@ class LeaderboardActivity : AppCompatActivity() {
 //            leaderboardScore.add(defaultLeaderboardScore[0])
 //            leaderboardScore.add(defaultLeaderboardScore[1])
 //            leaderboardScore.add(defaultLeaderboardScore[2])
-            writeScore("maars\tmaars1\t4")
-            writeScore("Ron\tmaars1\t17")
-            writeScore("Jane\tmaars1\t10")
+            writeScore("maars\tmaars1\t17")
+            writeScore("Ron\tmaars1\t10")
+            writeScore("Jane\tmaars1\t4")
 
 
             // Print default values into local file

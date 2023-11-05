@@ -51,11 +51,13 @@ class Login : AppCompatActivity() {
 //        writeScore("Ron\tmaars1\t17")
 //        writeScore("Jane\tmaars1\t10")
         println("writeScore done")
-//        val scanner3  = Scanner(resources.openRawResource(R.raw.username_password))
-        val scanner4 = Scanner(openFileInput("score.txt"))
+
+        try {
+//            val scanner3  = Scanner(resources.openRawResource(R.raw.username_password))
+            val scanner4 = Scanner(openFileInput("score.txt"))
 
 //        readFile2(scanner3)
-        readFile2(scanner4)
+            readFile2(scanner4)
 //        for ((key, value) in usernamePassword) {
 //            println("mmmmm $key = $value")
 //        }
@@ -64,6 +66,12 @@ class Login : AppCompatActivity() {
 //        val passwordEtc = findViewById<EditText>(R.id.loginPassword)
 //        usernameEtc.hint = "Enter username"
 //        passwordEtc.hint = "Enter password"
+        } catch (exception: Exception) {
+//          create method to insert these entries if not there:
+            writeScore("maars\tmaars1\t17")
+            writeScore("Ron\tmaars1\t10")
+            writeScore("Jane\tmaars1\t4")
+        }
 
         val registerButton:Button = findViewById(R.id.register)
 

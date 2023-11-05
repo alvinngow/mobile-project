@@ -10,39 +10,45 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login!"
         android:layout_gravity="center"
-        android:textSize="40sp"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/loginUsername"
-        android:layout_marginBottom="20sp"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/loginPassword"
-        android:inputType="textPassword"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/submitPassword"
-        android:layout_marginTop="30sp"
-        android:layout_gravity="center"
+        android:layout_marginTop="100px"
         android:text="Login"
-        android:onClick="loginSubmit"/>
+        android:textSize="40sp" />
+
+    <EditText
+        android:id="@+id/loginUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50px"
+        android:layout_marginEnd="50px"
+        android:layout_marginBottom="20sp"
+        android:hint="Username" />
+
+    <EditText
+        android:id="@+id/loginPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50px"
+        android:layout_marginEnd="50px"
+        android:hint="Password"
+        android:inputType="textPassword" />
 
     <Button
+        android:id="@+id/submitPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/register"
-        android:layout_marginTop="50sp"
         android:layout_gravity="center"
-        android:text="Register Account"
-        />
+        android:layout_marginTop="30sp"
+        android:onClick="loginSubmit"
+        android:text="Login" />
+
+    <Button
+        android:id="@+id/register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="50sp"
+        android:text="Register Account" />
 
 
 </LinearLayout>

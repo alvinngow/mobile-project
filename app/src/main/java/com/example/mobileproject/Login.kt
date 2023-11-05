@@ -64,6 +64,13 @@ class Login : AppCompatActivity() {
 //        val passwordEtc = findViewById<EditText>(R.id.loginPassword)
 //        usernameEtc.hint = "Enter username"
 //        passwordEtc.hint = "Enter password"
+
+        val registerButton:Button = findViewById(R.id.register)
+
+        registerButton.setOnClickListener{
+            val intent = Intent(this, Register::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun readFile2(scanner: Scanner){
@@ -91,6 +98,8 @@ class Login : AppCompatActivity() {
         val password = findViewById<EditText>(R.id.loginPassword)
         var usernametext = username.text.toString()
         var passwordText = password.text.toString()
+
+
         if (usernamePassword.containsKey(usernametext) &&
             usernamePassword[usernametext] == passwordText &&
             !usernametext.isNullOrEmpty() && !passwordText.isNullOrEmpty()

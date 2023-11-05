@@ -39,11 +39,11 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/addWordButton"
+        android:id="@+id/register"
         android:layout_marginTop="50sp"
         android:layout_gravity="center"
         android:text="Register Account"
-        android:onClick="addWordButtonClick"/>
+        />
 
 
 </LinearLayout>

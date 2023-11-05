@@ -12,9 +12,6 @@ import android.os.Handler
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
-import java.io.PrintStream
-import java.util.Scanner
 
 
 class GameView : View, SensorEventListener {

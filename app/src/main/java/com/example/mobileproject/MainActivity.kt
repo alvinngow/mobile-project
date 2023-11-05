@@ -29,9 +29,14 @@ class MainActivity : Activity(), SensorEventListener {
 //    private lateinit var gyroscope: Sensor
     private lateinit var accelerometer: Sensor
 
+    private var username = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Get and set current user
+        username = intent.getStringExtra("username").toString()
+        Log.d("!MainActivity: Username", "$username")
 
         sensorMan = getSystemService(SENSOR_SERVICE) as SensorManager
 //        gyroscope =sensorMan.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
@@ -89,8 +94,6 @@ class MainActivity : Activity(), SensorEventListener {
         // Sliding animation to next intent
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
-
-
 
     override fun onResume() {
         super.onResume()

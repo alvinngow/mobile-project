@@ -11,7 +11,7 @@ import java.util.Scanner
 class Register : AppCompatActivity() {
 
     private fun checkIfUserExist(): ArrayList<String> {
-        val scoreScanner = Scanner(openFileInput("score.txt"))
+        val scoreScanner = Scanner(openFileInput("users.txt"))
 
         val usernames = ArrayList<String>()
 
@@ -46,10 +46,10 @@ class Register : AppCompatActivity() {
             if (users.contains(usernameText)) {
                 Toast.makeText(this, "Username exists", Toast.LENGTH_SHORT).show()
             } else {
-                val registerStream = PrintStream(openFileOutput("score.txt", MODE_APPEND))
+                val registerStream = PrintStream(openFileOutput("users.txt", MODE_APPEND))
 
 
-                registerStream.println(usernameText + '\t' + passwordText + '\t' + '0')
+                registerStream.println(usernameText + '\t' + passwordText)
                 finish()
 
             }

@@ -90,6 +90,7 @@ class MainActivity : Activity(), SensorEventListener {
     // --- Start new intent and move to LeaderboardActivity
     fun leaderboardClick(view: View) {
         val intent = Intent(this, LeaderboardActivity::class.java)
+        intent.putExtra("username", "$username")
         startActivity(intent)
         // Sliding animation to next intent
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)

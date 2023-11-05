@@ -8,8 +8,8 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.View
+import android.util.Log
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.RelativeLayout
@@ -23,7 +23,7 @@ class MainActivity : Activity(), SensorEventListener {
     lateinit var r1_game_over: RelativeLayout
     lateinit var btn_start: Button
     private lateinit var gv: GameView
-    private lateinit var currentUser: String
+
 
     private lateinit var sensorMan:SensorManager
 //    private lateinit var gyroscope: Sensor
@@ -37,12 +37,6 @@ class MainActivity : Activity(), SensorEventListener {
         // Get and set current user
         username = intent.getStringExtra("username").toString()
         Log.d("!MainActivity: Username", "$username")
-
-        if (getIntent().extras != null) {
-            val user= intent.getStringExtra("username")
-            println("intent: got it here - " + user)
-            currentUser = user !!
-        }
 
         sensorMan = getSystemService(SENSOR_SERVICE) as SensorManager
 //        gyroscope =sensorMan.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
@@ -96,7 +90,6 @@ class MainActivity : Activity(), SensorEventListener {
     // --- Start new intent and move to LeaderboardActivity
     fun leaderboardClick(view: View) {
         val intent = Intent(this, LeaderboardActivity::class.java)
-        intent.putExtra("username", currentUser)
         startActivity(intent)
         // Sliding animation to next intent
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)

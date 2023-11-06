@@ -31,8 +31,8 @@ class GameView : View, SensorEventListener {
     }
 
     private var state = GameState.Neutral
-    private val yValue2 = 1
-    private val yValue0 = 0
+    private val maxJumpThreshold = 4.0f
+    private val minJumpThreshold = 2.0f
 
     private var leaderboardScore = arrayListOf<Array<String>>()
 
@@ -73,6 +73,7 @@ class GameView : View, SensorEventListener {
                 mainActivity.r1_game_over.visibility = View.VISIBLE
                 mainActivity.txt_best_score.text = "Best Score: ${recordBestScore().toString()}"
                 ScoreManager.bestScore = recordBestScore()
+                ScoreManager.birdDropRate = 0.6f
                 stopScoringSystem()
                 resetScoringSystem()
 
@@ -99,15 +100,23 @@ class GameView : View, SensorEventListener {
         val mainActivity = context as MainActivity
         mainActivity.txt_score.text = "0"
         score = 0
+        ScoreManager.birdDropRate = 0.6f
         initBird()
     }
 
     fun increaseBirdDropRate() {
         val dropRateRunnable = object : Runnable {
             override fun run() {
-                ScoreManager.birdDropRate *= 1.1f
-                handler?.postDelayed(this, 3000)
+                if (ScoreManager.birdDropRate >= 1.3f) {
+                    ScoreManager.birdDropRate = 1.3f
+                    Log.d("BirdDropRate", "Drop Rate is: ${ScoreManager.birdDropRate}")
+                } else {
+                    ScoreManager.birdDropRate *= 1.1f
+                    Log.d("BirdDropRate", "Drop Rate is: ${ScoreManager.birdDropRate}")
+                    handler?.postDelayed(this, 3000)
 //                Log.d("Bird Drop Rate,", "Drop rate is ${ScoreManager.birdDropRate}")
+                }
+
             }
 
         }
@@ -159,17 +168,17 @@ class GameView : View, SensorEventListener {
 //        }
 
         when (state) {
-            GameState.Neutral -> if (z >= yValue2) {
+            GameState.Neutral -> if (z >= maxJumpThreshold) {
                 state = GameState.Reaching2
             }
-            GameState.Reaching2 -> if (z <= yValue0) {
+            GameState.Reaching2 -> if (z <= minJumpThreshold) {
                 state = GameState.Reaching0
             }
-            GameState.Reaching0 -> if (z >= yValue2) {
+            GameState.Reaching0 -> if (z >= maxJumpThreshold) {
                 state = GameState.JumpReady
             }
             GameState.JumpReady -> {
-                bird!!.drop = -15f
+                bird!!.drop = -20f
                 state = GameState.Neutral
             }
         }

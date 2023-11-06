@@ -14,6 +14,7 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.RelativeLayout
 import android.widget.TextView
+import com.google.android.material.color.utilities.Score
 
 class MainActivity : Activity(), SensorEventListener {
 
@@ -94,6 +95,7 @@ class MainActivity : Activity(), SensorEventListener {
         startActivity(intent)
         // Sliding animation to next intent
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+
     }
 
     override fun onResume() {

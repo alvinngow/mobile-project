@@ -27,7 +27,6 @@ class MainActivity : Activity(), SensorEventListener {
 
 
     private lateinit var sensorMan:SensorManager
-//    private lateinit var gyroscope: Sensor
     private lateinit var accelerometer: Sensor
 
     private var username = ""
